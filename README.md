@@ -3,9 +3,17 @@ This will guide you to make a simple Ethereum wallet using web3
 
 
 
-## How to Run
+## To run API for EThereum Wallet
 
 ```
-nodemon wallet.js
+node wallet.js
 ```
+
+## To Sign a transaction and transfer
+
+```
+node signature.js
+```
+
+
 
