@@ -9,6 +9,9 @@ const await = require('await');
 const app = express();
 const bodyParser = require('body-parser');
 
+const web3 = new Web3('https://ropsten.infura.io/v3/7bc3250b95194b04b89d7ca9284d4e5a')
+
+
 
 const port = 3003;
 app.use(express.json());
@@ -20,9 +23,16 @@ app.use(express.json());
 
 
 // Ropsten Blockchain node Url  
-var url = 'http://ropsten.infura.io/v3/7bc3250b95194b04b89d7ca9284d4e5a'
+// var url = 'http://ropsten.infura.io/v3/7bc3250b95194b04b89d7ca9284d4e5a'
 
-var web3 = new Web3(new Web3.providers.HttpProvider(url));
+// var web3 = new Web3(new Web3.providers.HttpProvider(url));
+
+
+// ---------------------------------------*****************************--------------------------------
+// ------------------------------------Creating wallet address and accounts---------------------------------------
+//----------------------------------------******************************---------------------------------
+
+
 
 
 // This will generate new address and private Key 
@@ -115,14 +125,40 @@ app.post('/api/decryptWallet',(req,res)=>{
     res.send(stringify({"address":data}))
 })
 
-
-app.post('/api/walletSave',(req,res)=>{
-    var password = req.body.password
-    console.log(password)
-    var data = web3.eth.accounts.wallet.save(password)
-    console.log(data)
-    res.send(data)
+// To get Ether Balance of any Ethereum account
+app.post('/api/getBalance',async(req,res) =>
+{
+  var address = req.body.address;
+  console.log(address)
+ web3.eth.getBalance(address).then(s => {
+    console.log(s)
+    res.send(s)
+   }).catch(err =>{
+    console.log("Error", err)
+    res.send(err)
+   })
 })
+
+
+// To have the transaction count
+app.post('/api/txCount',async(req,res) =>
+{
+  var address = req.body.address;
+  console.log(address)
+ web3.eth.getTransactionCount(address).then(s => {
+    console.log(s)
+    res.send(stringify({"TransactionCount":s}))
+   }).catch(err =>{
+    console.log("Error", err)
+    res.send(stringify({"TransactionCount":s}))
+   })
+})
+
+
+
+
+
+
 
 
 
